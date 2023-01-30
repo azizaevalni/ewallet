@@ -24,11 +24,12 @@ public class User {
     private String ktp;
     private Boolean ban = false;
 
-    private Long balance;
-    private Long transactionLimit;
-    private int MaxIncorrectPassword = 0;
+    private Long balance = 0L;
+    private Long transactionLimit = 1000000L;
+    private int MaxIncorrectPassword = 3;
     private int MaxBalance = 10000000;
-    private int MaxTopup = 10000;
+    private int MaxTopup = 10000000;
+
 
     public User(String username, String password) {
         this.username = username;

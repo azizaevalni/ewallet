@@ -127,4 +127,9 @@ import static com.BE.EWallet.constant.Constant.MAX_TRANSACTION_AMOUNT;
         String regex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?_&(){},./<>?;':\"])[A-Za-z\\d@$!%*#?_&(){},./<>?;':\"]{10,}$";
         return newPassword.matches(regex);
     }
+
+    public void executeTopup(User user, int newBalance) {
+        user.setBalance((long) newBalance);
+        userRepo.save(user);
+    }
 }

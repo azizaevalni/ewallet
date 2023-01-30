@@ -36,7 +36,7 @@ public class UserController {
         String username = userRegisDTO.username();
         String password = userRegisDTO.password();
         //validate username
-        if (userService.validateUsername(username)) {
+        if (!userService.validateUsername(username)) {
             return new ResponseEntity<>("400 - username taken", HttpStatus.BAD_REQUEST);
         }
         //validate password
