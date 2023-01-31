@@ -62,7 +62,7 @@ public class TransactionController {
         transactionOut.setAmount(transferDTO.getAmount());
         transactionOut.setType("TRANSFER-OUT");
         transactionOut.setStatus("SETTLED");
-        transactionOut.setDate(String.valueOf(LocalDate.now()));
+        transactionOut.setDate(LocalDate.now());
         transactionOut.setBalance_before(user.getBalance());
         transactionOut.setBalance_after((long) (user.getBalance() - transferDTO.getAmount() - (transferDTO.getAmount()*Constant.TRANSACTION_TAX)));
 
@@ -71,7 +71,7 @@ public class TransactionController {
         transactionIn.setAmount(transferDTO.getAmount());
         transactionIn.setType("TRANSFER-IN");
         transactionIn.setStatus("SETTLED");
-        transactionIn.setDate(String.valueOf(LocalDate.now()));
+        transactionIn.setDate(LocalDate.now());
         transactionIn.setBalance_before(user1.getBalance());
         transactionIn.setBalance_after(user1.getBalance() + transferDTO.getAmount());
 
@@ -107,7 +107,7 @@ public class TransactionController {
         transactionTopup.setAmount(topupTransactionDTO.getAmount());
         transactionTopup.setType("TOP-UP");
         transactionTopup.setStatus("SETTLED");
-        transactionTopup.setDate(String.valueOf(LocalDate.now()));
+        transactionTopup.setDate(LocalDate.now());
         transactionTopup.setBalance_before(user.getBalance());
         transactionTopup.setBalance_after((user.getBalance() + topupTransactionDTO.getAmount()));
        
