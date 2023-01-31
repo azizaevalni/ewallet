@@ -1,7 +1,6 @@
 package com.BE.EWallet.service;
 
 import com.BE.EWallet.constant.Constant;
-import com.BE.EWallet.dto.ChangePassDTO;
 import com.BE.EWallet.dto.UserBalanceDTO;
 import com.BE.EWallet.dto.UserDTO;
 import com.BE.EWallet.mapper.UserMapper;
@@ -9,11 +8,8 @@ import com.BE.EWallet.model.User;
 import com.BE.EWallet.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.aop.ClassFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 
 import static com.BE.EWallet.constant.Constant.MAX_TRANSACTION_AMOUNT;
 
@@ -81,9 +77,9 @@ import static com.BE.EWallet.constant.Constant.MAX_TRANSACTION_AMOUNT;
     public void addKtp(String username, String ktp) {
         User user = userRepo.findByUsername(username);
         user.setKtp(ktp);
+        user.setTransactionLimit(Constant.MAX_TRANSACTION_AMOUNT_WITH_KTP);
         userRepo.save(user);
     }
-
 
     public boolean validateKtp(String ktp) {
         String regex = String.format("^[0-9]{%d}$", Constant.KTP_LENGTH);
@@ -99,13 +95,13 @@ import static com.BE.EWallet.constant.Constant.MAX_TRANSACTION_AMOUNT;
         User user = userRepo.findByUsername(username);
         String password = user.getPassword();
 
-        int incorrectPasswordCount = user.getMaxIncorrectPassword();
+        int incorrectPasswordCount = user.getPasswordAttempt();
 
         if (!password.equals(passwordInput)){
-            user.setMaxIncorrectPassword(incorrectPasswordCount + 1);
-            if (user.getMaxIncorrectPassword() >= Constant.MAX_TRY){
+            user.setPasswordAttempt(incorrectPasswordCount + 1);
+            if (user.getPasswordAttempt() >= Constant.MAX_TRY){
                 user.setBan(true);
-                user.setMaxIncorrectPassword(0);
+                user.setPasswordAttempt(0);
             }
             userRepo.save(user);
             return false;

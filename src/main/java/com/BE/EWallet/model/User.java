@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,12 +23,10 @@ public class User {
     private String  password;
     private String ktp;
     private Boolean ban = false;
-
     private Long balance = 0L;
-    private Long transactionLimit = 1000000L;
-    private int MaxIncorrectPassword = 3;
-    private int MaxBalance = 10000000;
-    private int MaxTopup = 10000000;
+    private Long transactionLimit = 1_000_000L;
+    private int passwordAttempt = 0;
+
 
 
     public User(String username, String password) {
@@ -36,5 +34,7 @@ public class User {
         this.password = password;
     }
 
+    @OneToMany(mappedBy = "user")
+    private List<Transaction> transactions;
 
 }

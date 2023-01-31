@@ -104,25 +104,24 @@ public class UserController {
 
 
         if (!userService.findByUsername(username)){
-            return new ResponseEntity<>("400 - user not found", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("user not found", HttpStatus.BAD_REQUEST);
         }
 
         if (userService.isBanned(username)){
-            return new ResponseEntity<>("400 - user is banned", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("user is banned", HttpStatus.BAD_REQUEST);
         }
 
         if (!userService.validatePassword(username, oldPassword)){
-            return new ResponseEntity<>("400 - format invalid", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("format invalid", HttpStatus.BAD_REQUEST);
         }
 
         if (!userService.validateNewPassword(newPassword)){
-            return new ResponseEntity<>("400 - format invalid"
-                    , HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("format invalid", HttpStatus.BAD_REQUEST);
         }
 
         userService.changePassword(username, newPassword);
 
-        return new ResponseEntity<>("200 - OK", HttpStatus.OK);
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
 

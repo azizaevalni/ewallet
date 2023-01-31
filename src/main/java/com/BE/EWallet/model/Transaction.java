@@ -1,9 +1,7 @@
 package com.BE.EWallet.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,12 +11,21 @@ import lombok.Setter;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
     private Long trx_id;
     private String username;
-    private String password;
-    private Long amount;
+    private Integer amount;
+    private  Long balance_before;
+    private Long balance_after;
     private String Type;
-    private int MAX_TOPUP = 10000000;
+    private String status;
+    private String date;
+
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 
 }
