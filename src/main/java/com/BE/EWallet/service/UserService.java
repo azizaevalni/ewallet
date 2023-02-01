@@ -37,10 +37,10 @@ import static com.BE.EWallet.constant.Constant.MAX_TRANSACTION_AMOUNT;
         String regex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#^?&])[A-Za-z\\d@$!%*#^?&]{10,}$";
         if (password.matches(regex)) {
             //valid password
-            return true;
+            return false;
         }
         //invalid password
-        return false;
+        return true;
     }
 
     public void createUser(User user) {
@@ -64,9 +64,10 @@ import static com.BE.EWallet.constant.Constant.MAX_TRANSACTION_AMOUNT;
 
     public String unban(String username) {
         var user = userRepo.findByUsername(username);
+        user.setPasswordAttempt(0);
         user.setBan(false);
         User result = userRepo.save(user);
-        return "200 - OK";
+        return "OK";
     }
 
     public boolean findByKtp(String ktp) {

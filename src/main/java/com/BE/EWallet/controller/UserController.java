@@ -10,9 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.net.URI;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -37,24 +35,25 @@ public class UserController {
         String password = userRegisDTO.password();
         //validate username
         if (!userService.validateUsername(username)) {
-            return new ResponseEntity<>("400 - username taken", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Username Taken", HttpStatus.BAD_REQUEST);
         }
         //validate password
-        if (!userService.validatePassword(password)) {
-            return new ResponseEntity<>("400 - password format invalid", HttpStatus.BAD_REQUEST);
+        if (userService.validatePassword(password)) {
+            return new ResponseEntity<>("Password Format Invalid", HttpStatus.BAD_REQUEST);
         }
 
         //membuat user baru
         User user = new User(username, password);
         userService.createUser(user);
-        return new ResponseEntity<>("200 - OK", HttpStatus.CREATED);
+        return new ResponseEntity<>("OK", HttpStatus.CREATED);
     }
     @GetMapping("/user/{username}/getinfo")
-    public ResponseEntity<UserInfoDTO> getUserInfo(@PathVariable String username) {
+    public ResponseEntity<Object> getUserInfo(@PathVariable String username) {
         User user = userService.getByUsername(username);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User Not Found", HttpStatus.NOT_FOUND);
         }
+
         UserInfoDTO userInfo = new UserInfoDTO(username, user.getKtp());
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
@@ -64,7 +63,7 @@ public class UserController {
             UserBalanceDTO userBalanceDTO = userService.getUserBalance(username);
             return ResponseEntity.ok(userBalanceDTO);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("400 - user not found");
+            return ResponseEntity.badRequest().body("User Not Found");
         }
     }
     @PutMapping("/user/{username}/unban")
@@ -73,7 +72,7 @@ public class UserController {
             String unban = userService.unban(username);
             return ResponseEntity.ok(unban);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("400 - user not found");
+            return ResponseEntity.badRequest().body("User Not Found");
         }
     }
 
@@ -83,17 +82,17 @@ public class UserController {
         String ktp = ktpDTO.getKtp();
 
         if (!userService.findByUsername(username)) {
-            return new ResponseEntity<>("400 - user not found", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("User Not Found", HttpStatus.BAD_REQUEST);
         }
         if (userService.findByKtp(ktp)) {
-            return new ResponseEntity<>("400 - ktp has been used by other user", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("KTP Has Been Used By Other User", HttpStatus.BAD_REQUEST);
         }
         if (!userService.validateKtp(ktp)) {
-            return new ResponseEntity<>("400 - incorrect ktp format", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Incorrect KTP Format", HttpStatus.BAD_REQUEST);
         }
         userService.addKtp(username, ktp);
 
-        return new ResponseEntity<>("200 - OK", HttpStatus.OK);
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
     @PostMapping ("/user/changepassword")
     public ResponseEntity<String> changePassword(@RequestBody ChangePassDTO changePassDTO) {
@@ -104,19 +103,19 @@ public class UserController {
 
 
         if (!userService.findByUsername(username)){
-            return new ResponseEntity<>("user not found", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("User Not Found", HttpStatus.BAD_REQUEST);
         }
 
         if (userService.isBanned(username)){
-            return new ResponseEntity<>("user is banned", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("User Is Banned", HttpStatus.BAD_REQUEST);
         }
 
         if (!userService.validatePassword(username, oldPassword)){
-            return new ResponseEntity<>("format invalid", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Format Invalid", HttpStatus.BAD_REQUEST);
         }
 
         if (!userService.validateNewPassword(newPassword)){
-            return new ResponseEntity<>("format invalid", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Format Invalid", HttpStatus.BAD_REQUEST);
         }
 
         userService.changePassword(username, newPassword);

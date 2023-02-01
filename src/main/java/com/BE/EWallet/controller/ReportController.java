@@ -1,6 +1,7 @@
 package com.BE.EWallet.controller;
 
 import com.BE.EWallet.dto.ReportDTO;
+import com.BE.EWallet.dto.ReportDTO2;
 import com.BE.EWallet.model.User;
 import com.BE.EWallet.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class ReportController {
 
     @GetMapping("/report/getreport/{date}")
     public ResponseEntity<Object> getReport(@PathVariable("date") LocalDate date) {
-       return ResponseEntity.ok().body(reportService.getreport(date));
+        return  new ResponseEntity<>(new ReportDTO2(reportService.getreport(date)),HttpStatus.OK);
     }
 
 

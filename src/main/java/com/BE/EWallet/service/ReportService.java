@@ -39,7 +39,7 @@ public class ReportService {
                     reportDTO.setBalanceChangeDate(balanceChangeDate);
                     reportDTO.setChangeInPercentage("-");
                 }else {
-                    double changeInPercentage = 1.0 * (firstTransaction - lastTransaction) / firstTransaction *100;
+                    double changeInPercentage = 1.0 * (lastTransaction - firstTransaction) / firstTransaction *100;
                     reportDTO.setChangeInPercentage(changeInPercentage+"%");
                     reportDTO.setBalanceChangeDate(balanceChangeDate);
                 }
