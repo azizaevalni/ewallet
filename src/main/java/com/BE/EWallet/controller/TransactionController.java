@@ -40,17 +40,17 @@ public class TransactionController {
         Integer amount = transferDTO.getAmount();
 
         if (user == null) {
-            return new ResponseEntity<>("user not found", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("User Not Found", HttpStatus.BAD_REQUEST);
         }
         if (userService.validatePassword(password)) {
-            return new ResponseEntity<>("password invalid", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Password Invalid", HttpStatus.BAD_REQUEST);
         }
         if (userService.validatePassword(transferDTO.getPassword())) {
-            return new ResponseEntity<>("password invalid", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Password Invalid", HttpStatus.BAD_REQUEST);
         }
 
         if (user.getBan()) {
-            return new ResponseEntity<>("user banned", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("User Banned", HttpStatus.BAD_REQUEST);
         }
 
         if (!user.getPassword().equals(transferDTO.getPassword())){
@@ -109,7 +109,7 @@ public class TransactionController {
 
 
     @PostMapping("/transaction/top-up")
-    public ResponseEntity<String> topup(@RequestBody TopupTransactionDTO topupTransactionDTO) {
+    public ResponseEntity<String> topup (@RequestBody TopupTransactionDTO topupTransactionDTO) {
         System.out.println(topupTransactionDTO);
 
         // Validate user and amount

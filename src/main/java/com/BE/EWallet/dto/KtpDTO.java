@@ -6,5 +6,5 @@ import lombok.Getter;
 public class KtpDTO {
     String ktp;
 
-//
+
 }
