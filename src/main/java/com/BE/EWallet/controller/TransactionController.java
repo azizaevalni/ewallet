@@ -3,6 +3,7 @@ package com.BE.EWallet.controller;
 import com.BE.EWallet.constant.Constant;
 import com.BE.EWallet.dto.TopupTransactionDTO;
 import com.BE.EWallet.dto.TransferDTO;
+import com.BE.EWallet.dto.TransferResponseDTO;
 import com.BE.EWallet.model.Transaction;
 import com.BE.EWallet.model.User;
 import com.BE.EWallet.repository.TransactionRepo;
@@ -78,33 +79,7 @@ public class TransactionController {
             return new ResponseEntity<>("user banned", HttpStatus.BAD_REQUEST);
         }
 
-        Transaction transactionOut = new Transaction();
-        transactionOut.setUsername(transferDTO.getUsername());
-        transactionOut.setAmount(transferDTO.getAmount());
-        transactionOut.setType("TRANSFER-OUT");
-        transactionOut.setStatus("SETTLED");
-        transactionOut.setDate(LocalDate.now());
-        transactionOut.setBalance_before(user.getBalance());
-        transactionOut.setBalance_after((long) (user.getBalance() - transferDTO.getAmount() - (transferDTO.getAmount()*Constant.TRANSACTION_TAX)));
-
-        Transaction transactionIn = new Transaction();
-        transactionIn.setUsername(transferDTO.getDestinationUsername());
-        transactionIn.setAmount(transferDTO.getAmount());
-        transactionIn.setType("TRANSFER-IN");
-        transactionIn.setStatus("SETTLED");
-        transactionIn.setDate(LocalDate.now());
-        transactionIn.setBalance_before(user1.getBalance());
-        transactionIn.setBalance_after(user1.getBalance() + transferDTO.getAmount());
-
-        user.setBalance((long) (user.getBalance() - transferDTO.getAmount() - (transferDTO.getAmount()*Constant.TRANSACTION_TAX)));
-        user1.setBalance(user1.getBalance() + transferDTO.getAmount());
-        transactionIn.setUser(user1);
-        transactionOut.setUser(user);
-
-
-        transactionRepo.saveAll(List.of(transactionIn,transactionOut));
-        return new ResponseEntity<>("OK", HttpStatus.OK);
-
+        return ResponseEntity.ok().body(transactionService.createTransaction(transferDTO));
     }
 
 

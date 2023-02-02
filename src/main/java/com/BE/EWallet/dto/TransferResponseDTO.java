@@ -1,14 +1,14 @@
 package com.BE.EWallet.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TransferResponseDTO {
-   private Integer trx_id;
+   private Long trx_id;
    private String originUsername;
    private String destinationUsername;
    private Integer amount;

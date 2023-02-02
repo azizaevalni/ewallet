@@ -13,7 +13,6 @@ import java.time.LocalDate;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long trx_id;
     private String username;
     private Integer amount;
